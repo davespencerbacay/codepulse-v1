@@ -1,0 +1,92 @@
+####################################
+# OS
+####################################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+####################################
+# Node / React
+####################################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+dist/
+build/
+out/
+.cache/
+
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+####################################
+# Next.js (if used)
+####################################
+.next/
+.vercel/
+
+####################################
+# .NET / ASP.NET Core
+####################################
+bin/
+obj/
+out/
+
+appsettings.Development.json
+appsettings.Local.json
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+####################################
+# Visual Studio
+####################################
+.vs/
+.vscode/
+
+####################################
+# Rider / JetBrains
+####################################
+.idea/
+*.iml
+
+####################################
+# Logs
+####################################
+logs/
+*.log
+
+####################################
+# Coverage / Test Results
+####################################
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+####################################
+# NuGet
+####################################
+*.nupkg
+.nuget/packages/
+
+####################################
+# Publish output
+####################################
+publish/
+
+####################################
+# Misc
+####################################
+*.swp
+*.tmp
+*.bak
