@@ -3,4 +3,37 @@
   <div class="d-flex justify-content-end mt-3">
     <a [routerLink]="['/admin', 'categories', 'add']" class="btn btn-primary">Add Category</a>
   </div>
+
+  <div>
+    @if(isLoading()) {
+    <p>Loading categories...</p>
+    } @else { @if(isError()) {
+    <p>There has been an error</p>
+    } @else {
+    <table class="table table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(category of value(); track category.id) {
+        <tr>
+          <td>{{ category.id }}</td>
+          <td>{{ category.name }}</td>
+          <td>{{ category.urlHandle }}</td>
+          <td>
+            <a [routerLink]="['/admin/categories/edit', category.id]" class="btn btn-warning">
+              Edit
+            </a>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }}
+  </div>
 </div>

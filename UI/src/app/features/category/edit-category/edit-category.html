@@ -1,0 +1,49 @@
+<div class="container">
+  <h1 class="mt-3">Edit Category</h1>
+
+  <form [formGroup]="editCategoryFormGroup" (ngSubmit)="onSubmit()">
+    <div class="mt-3">
+      <div class="mt-3">
+        <label for="categoryName" class="form-label">Category Id</label>
+        <input type="text" class="form-control" disabled value="{{ id() }}" />
+      </div>
+      <div class="mt-3">
+        <label for="categoryName" class="form-label">Category Name</label>
+        <input
+          type="text"
+          id="categoryName"
+          name="categoryName"
+          class="form-control"
+          placeholder="Enter the category name"
+          formControlName="categoryName"
+        />
+        @if (nameFormControl.hasError('required') && nameFormControl.touched) {
+        <div class="text-danger small mt-2">Category Name is required.</div>
+        } @if (nameFormControl.hasError('maxlength') && nameFormControl.touched) {
+        <div class="text-danger small mt-2">Category Name can only be 30 characters long.</div>
+        }
+      </div>
+      <div class="mt-3">
+        <label for="urlHandle" class="form-label">URL Handle</label>
+        <input
+          type="text"
+          id="urlHandle"
+          name="urlHandle"
+          class="form-control"
+          placeholder="Enter the URL handle"
+          formControlName="urlHandle"
+        />
+        @if (urlHandleFormControl.hasError('required') && urlHandleFormControl.touched) {
+        <div class="text-danger small mt-2">URL Handle is required.</div>
+        } @if (urlHandleFormControl.hasError('maxlength') && urlHandleFormControl.touched) {
+        <div class="text-danger small mt-2">URL Handle can only be 30 characters long.</div>
+        }
+      </div>
+      <div class="mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="editCategoryFormGroup.invalid">
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
