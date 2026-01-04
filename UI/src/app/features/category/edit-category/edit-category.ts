@@ -71,4 +71,20 @@ export class EditCategory {
       urlHandle: formRawValue.urlHandle,
     });
   }
+
+  deleteCategory() {
+    const id = this.id();
+    if (!id) {
+      return;
+    }
+
+    this.categoryService.deleteCategory(id).subscribe({
+      next: () => {
+        this.router.navigate(['/admin', 'categories']);
+      },
+      error: (err) => {
+        console.error('Failed to delete category', err);
+      },
+    });
+  }
 }
