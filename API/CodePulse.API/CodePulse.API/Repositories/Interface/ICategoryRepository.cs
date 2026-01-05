@@ -1,4 +1,4 @@
-﻿using CodePulse.API.Modells.Domain;
+﻿using CodePulse.API.Models.Domain;
 
 namespace CodePulse.API.Repositories.Interface
 {

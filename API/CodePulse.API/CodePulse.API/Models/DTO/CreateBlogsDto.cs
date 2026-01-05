@@ -1,10 +1,10 @@
-﻿namespace CodePulse.API.Modells.Domain
+﻿namespace CodePulse.API.Models.DTO
 {
-    public class BlogPost
+    public class CreateBlogsDto
     {
-        public Guid Id { get; set; }
         public string Title { get; set; }
         public string ShortDescription { get; set; }
+        public string Content { get; set; }
         public string FeaturedImageUrl { get; set; }
         public string UrlHandle { get; set; }
         public DateTime PublishedDate { get; set; }

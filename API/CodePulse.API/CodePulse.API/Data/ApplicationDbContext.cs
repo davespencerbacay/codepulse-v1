@@ -1,4 +1,4 @@
-﻿using CodePulse.API.Modells.Domain;
+﻿using CodePulse.API.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodePulse.API.Data
