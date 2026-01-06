@@ -16,8 +16,20 @@
       />
     </div>
     <div class="mb-3">
-      <label for="content">Content</label>
-      <textarea type="text" id="content" class="form-control" formControlName="content"></textarea>
+      <div class="d-flex flex-row">
+        <div class="col-6 p-2">
+          <label for="content">Content</label>
+          <textarea
+            type="text"
+            id="content"
+            class="form-control"
+            formControlName="content"
+          ></textarea>
+        </div>
+        <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll">
+          <markdown [data]="addBlogPostForm.controls.content.getRawValue()"></markdown>
+        </div>
+      </div>
     </div>
     <div class="mb-3">
       <label for="urlHandle">URL Handle</label>
@@ -25,6 +37,16 @@
     </div>
     <div class="mb-3">
       <label for="featuredImageUrl">Featured Image URL</label>
+      @if(addBlogPostForm.controls.featuredImageUrl.getRawValue()) {
+      <div class="mb-2">
+        <img
+          [src]="addBlogPostForm.controls.featuredImageUrl.getRawValue()"
+          alt="Featured Image"
+          class="img-fluid my-3"
+          style="width: 200px"
+        />
+      </div>
+      }
       <input
         type="text"
         id="featuredImageUrl"
