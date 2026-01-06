@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodePulse.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/blogs")]
     [ApiController]
     public class BlogsController : ControllerBase
     {
@@ -48,6 +48,30 @@ namespace CodePulse.API.Controllers
                 ShortDescription = blog.ShortDescription,
                 UrlHandle = blog.UrlHandle
             };
+            return Ok(response);
+        }
+        // GET: /api/blogs
+        [HttpGet]
+        public async Task<IActionResult> GetAllBlogs()
+        {
+            var blogs = await blogRepository.GetAllAsync();
+            var response = new List<BlogDto>();
+
+            foreach (var blog in blogs)
+            {
+                response.Add(new BlogDto
+                {
+                    Id = blog.Id,
+                    Author = blog.Author,
+                    Content = blog.Content,
+                    FeaturedImageUrl = blog.FeaturedImageUrl,
+                    IsVisible = blog.IsVisible,
+                    PublishedDate = blog.PublishedDate,
+                    ShortDescription = blog.ShortDescription,
+                    Title = blog.Title,
+                    UrlHandle = blog.UrlHandle
+                });
+            }
             return Ok(response);
         }
     }

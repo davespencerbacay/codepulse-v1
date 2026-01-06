@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { AddBlogRequest, Blog } from '../models/Blogs.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -13,5 +13,9 @@ export class BlogsService {
 
   createBlog(data: AddBlogRequest): Observable<Blog> {
     return this.http.post<Blog>(`${this.apiBaseUrl}/api/blogs`, data);
+  }
+
+  getAllBlogs(): HttpResourceRef<Blog[] | undefined> {
+    return httpResource<Blog[]>(() => `${this.apiBaseUrl}/api/blogs`);
   }
 }
