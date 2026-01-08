@@ -17,12 +17,15 @@ namespace CodePulse.API.Repositories.Implementation
         {
             await dbContext.BlogPosts.AddAsync(blog);
             await dbContext.SaveChangesAsync();
-            return blog;
+            
+            return await dbContext.BlogPosts
+                .Include(x => x.Categories)
+                .FirstOrDefaultAsync(x => x.Id == blog.Id);
         }
 
         public async Task<IEnumerable<BlogPost>> GetAllAsync()
         {
-            return await dbContext.BlogPosts.ToListAsync();
+            return await dbContext.BlogPosts.Include(x => x.Categories).ToListAsync();
         }
     }
 }

@@ -11,10 +11,12 @@ namespace CodePulse.API.Controllers
     public class BlogsController : ControllerBase
     {
         private readonly IBlogRepository blogRepository;
+        private readonly ICategoryRepository categoryRepository;
 
-        public BlogsController(IBlogRepository blogRepository)
+        public BlogsController(IBlogRepository blogRepository, ICategoryRepository categoryRepository)
         {
             this.blogRepository = blogRepository;
+            this.categoryRepository = categoryRepository;
         }
 
         // POST: /api/blogs
@@ -31,10 +33,20 @@ namespace CodePulse.API.Controllers
                 PublishedDate = request.PublishedDate,
                 ShortDescription = request.ShortDescription,
                 Title = request.Title,
-                UrlHandle = request.UrlHandle
+                UrlHandle = request.UrlHandle,
+                Categories = new List<Category>()
             };
 
-            await blogRepository.CreateAsync(blog);
+            foreach (var categoryGuid in request.Categories)
+            {
+                var existingCategory = await categoryRepository.GetById(categoryGuid);
+                if(existingCategory != null)
+                {
+                    blog.Categories.Add(existingCategory);
+                }
+            }
+
+            blog = await blogRepository.CreateAsync(blog);
 
             var response = new BlogDto
             {
@@ -46,7 +58,13 @@ namespace CodePulse.API.Controllers
                 Id = blog.Id,
                 IsVisible = blog.IsVisible,
                 ShortDescription = blog.ShortDescription,
-                UrlHandle = blog.UrlHandle
+                UrlHandle = blog.UrlHandle,
+                Categories = blog.Categories.Select(x => new CategoryDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle
+                }).ToList()
             };
             return Ok(response);
         }
@@ -69,7 +87,13 @@ namespace CodePulse.API.Controllers
                     PublishedDate = blog.PublishedDate,
                     ShortDescription = blog.ShortDescription,
                     Title = blog.Title,
-                    UrlHandle = blog.UrlHandle
+                    UrlHandle = blog.UrlHandle,
+                    Categories = blog.Categories.Select(x => new CategoryDto
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        UrlHandle = x.UrlHandle
+                    }).ToList()
                 });
             }
             return Ok(response);
