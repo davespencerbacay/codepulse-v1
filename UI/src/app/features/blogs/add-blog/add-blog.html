@@ -76,6 +76,15 @@
     </div>
 
     <div class="mb-3">
+      <label for="categories" class="form-label"> Categories </label>
+      <select class="form-control" multiple formControlName="categories">
+        @for(category of categoriesResponse(); track category.id) {
+        <option [value]="category.id">{{ category.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="mb-3">
       <button type="submit" class="btn btn-primary">Add Blog</button>
     </div>
   </form>

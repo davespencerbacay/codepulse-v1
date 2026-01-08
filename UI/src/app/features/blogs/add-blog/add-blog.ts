@@ -4,6 +4,7 @@ import { BlogsService } from '../services/blogs-service';
 import { AddBlogRequest } from '../models/Blogs.model';
 import { Router } from '@angular/router';
 import { MarkdownComponent } from 'ngx-markdown';
+import { CategoryService } from '../../category/services/category-service';
 
 @Component({
   selector: 'app-add-blog',
@@ -13,7 +14,10 @@ import { MarkdownComponent } from 'ngx-markdown';
 })
 export class AddBlog {
   blogService = inject(BlogsService);
+  categoryService = inject(CategoryService);
   router = inject(Router);
+  private categoriesResourceRef = this.categoryService.getAllCategories();
+  categoriesResponse = this.categoriesResourceRef.value;
 
   addBlogPostForm = new FormGroup({
     title: new FormControl<string>('', {
@@ -50,6 +54,9 @@ export class AddBlog {
     isVisible: new FormControl<boolean>(true, {
       nonNullable: true,
     }),
+    categories: new FormControl<string[]>([], {
+      nonNullable: true,
+    }),
   });
 
   onSubmit() {
@@ -63,6 +70,7 @@ export class AddBlog {
       publishedDate: formRawValue.publishedDate,
       author: formRawValue.author,
       isVisible: formRawValue.isVisible,
+      categories: formRawValue.categories ?? [],
     };
 
     this.blogService.createBlog(requestDto).subscribe({

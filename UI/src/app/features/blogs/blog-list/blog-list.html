@@ -16,6 +16,7 @@
           <th>Title</th>
           <th>Author</th>
           <th>Date</th>
+          <th>Categories</th>
         </tr>
       </thead>
       <tbody>
@@ -24,6 +25,11 @@
           <td>{{ blog.title }}</td>
           <td>{{ blog.author }}</td>
           <td>{{ blog.publishedDate }}</td>
+          <td>
+            @for(category of blog.categories; track category.id) {
+            <span class="badge text-bg-secondary">{{ category.name }}</span>
+            }
+          </td>
           <!-- <td>
             <a [routerLink]="['/admin', 'blogs', blog.id, 'edit']" class="btn btn-sm btn-secondary"
               >Edit</a
