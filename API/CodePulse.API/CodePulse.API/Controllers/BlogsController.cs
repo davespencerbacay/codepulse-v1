@@ -2,6 +2,7 @@
 using CodePulse.API.Models.DTO;
 using CodePulse.API.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
 
 
 namespace CodePulse.API.Controllers
@@ -96,6 +97,40 @@ namespace CodePulse.API.Controllers
                     }).ToList()
                 });
             }
+            return Ok(response);
+        }
+
+        // GET: /api/blogs/:blogId
+        [HttpGet]
+        [Route("{blogId:Guid}")]
+        public async Task<IActionResult> GetBlogById(Guid blogId)
+        {
+            var blogPost = await blogRepository.GetByIdAsync(blogId);
+
+            if (blogPost is null)
+            {
+                return NotFound();
+            }
+
+            var response = new BlogDto
+            {
+                Id = blogPost.Id,
+                Title = blogPost.Title,
+                Content = blogPost.Content,
+                Author = blogPost.Author,
+                PublishedDate = blogPost.PublishedDate,
+                FeaturedImageUrl = blogPost.FeaturedImageUrl,
+                IsVisible = blogPost.IsVisible,
+                ShortDescription = blogPost.ShortDescription,
+                UrlHandle = blogPost.UrlHandle,
+                Categories = blogPost.Categories.Select(x => new CategoryDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle
+                }).ToList()
+            };
+
             return Ok(response);
         }
     }
