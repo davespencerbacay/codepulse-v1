@@ -133,5 +133,63 @@ namespace CodePulse.API.Controllers
 
             return Ok(response);
         }
+
+
+        // PUT: /api/blogs/:blogId
+        [HttpPut]
+        [Route("{blogId:Guid}")]
+        public async Task<IActionResult> UpdateBlogById([FromRoute] Guid blogId, UpdateBlogRequestDto request)
+        {
+            var blog = new BlogPost
+            {
+                Id = blogId,
+                Author = request.Author,
+                Content = request.Content,
+                FeaturedImageUrl = request.FeaturedImageUrl,
+                IsVisible = request.IsVisible,
+                PublishedDate = request.PublishedDate,
+                ShortDescription = request.ShortDescription,
+                Title = request.Title,
+                UrlHandle = request.UrlHandle,
+                Categories = new List<Category>()
+            };
+
+            foreach(var categoryGuid in request.Categories)
+            {
+                var existingCategory = await categoryRepository.GetById(categoryGuid);
+                if(existingCategory != null)
+                {
+                    blog.Categories.Add(existingCategory);
+                }
+            }
+
+            // Call repository to update blog domain model
+            var updatedBlog = await blogRepository.UpdateAsync(blog);
+            if(updatedBlog == null)
+            {
+                return NotFound();
+            }
+
+            var response = new BlogDto
+            {
+                Id = blog.Id,
+                Title = blog.Title,
+                Content = blog.Content,
+                Author = blog.Author,
+                PublishedDate = blog.PublishedDate,
+                FeaturedImageUrl = blog.FeaturedImageUrl,
+                IsVisible = blog.IsVisible,
+                ShortDescription = blog.ShortDescription,
+                UrlHandle = blog.UrlHandle,
+                Categories = blog.Categories.Select(x => new CategoryDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlHandle = x.UrlHandle
+                }).ToList()
+            };
+
+            return Ok(response);
+        }
     }
 }

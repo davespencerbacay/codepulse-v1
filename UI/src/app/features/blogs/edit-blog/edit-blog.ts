@@ -3,6 +3,8 @@ import { BlogsService } from '../services/blogs-service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
+import { UpdateBlogRequest } from '../models/Blogs.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-blog',
@@ -14,6 +16,7 @@ export class EditBlog {
   id = input<string>();
   blogService = inject(BlogsService);
   categoryService = inject(CategoryService);
+  router = inject(Router);
 
   private blogRef = this.blogService.getBlogById(this.id);
   blogResponse = this.blogRef.value;
@@ -24,26 +27,23 @@ export class EditBlog {
   editBlogPostForm = new FormGroup({
     title: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(30), Validators.maxLength(50)],
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(1000)],
     }),
     shortDescription: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(100), Validators.maxLength(300)],
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(1300)],
     }),
     content: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(500), Validators.maxLength(5000)],
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(15000)],
     }),
     featuredImageUrl: new FormControl<string>('', {
       nonNullable: true,
-      validators: [
-        Validators.required,
-        Validators.pattern(/^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|svg))$/i),
-      ],
+      validators: [Validators.required],
     }),
     urlHandle: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(10), Validators.maxLength(100)],
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(100)],
     }),
     publishedDate: new FormControl<string>(new Date().toISOString().split('T')[0], {
       nonNullable: true,
@@ -51,7 +51,7 @@ export class EditBlog {
     }),
     author: new FormControl<string>('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(50)],
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
     }),
     isVisible: new FormControl<boolean>(true, {
       nonNullable: true,
@@ -77,5 +77,31 @@ export class EditBlog {
     }
   });
 
-  onSubmit() {}
+  onSubmit() {
+    const id = this.id();
+    console.log(this.editBlogPostForm.valid);
+    if (id && this.editBlogPostForm.valid) {
+      const formValue = this.editBlogPostForm.getRawValue();
+      const updateBlogRequest: UpdateBlogRequest = {
+        title: formValue.title,
+        shortDescription: formValue.shortDescription,
+        content: formValue.content,
+        featuredImageUrl: formValue.featuredImageUrl,
+        urlHandle: formValue.urlHandle,
+        publishedDate: new Date(formValue.publishedDate),
+        categories: formValue.categories ?? [],
+        author: formValue.author,
+        isVisible: formValue.isVisible,
+      };
+
+      this.blogService.editBlogById(id, updateBlogRequest).subscribe({
+        next: () => {
+          this.router.navigate(['/admin/blogs']);
+        },
+        error: (err) => {
+          console.error('Error updating blog:', err);
+        },
+      });
+    }
+  }
 }

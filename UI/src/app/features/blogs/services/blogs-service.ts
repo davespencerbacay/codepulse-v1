@@ -1,5 +1,5 @@
 import { inject, Injectable, InputSignal } from '@angular/core';
-import { AddBlogRequest, Blog } from '../models/Blogs.model';
+import { AddBlogRequest, Blog, UpdateBlogRequest } from '../models/Blogs.model';
 import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
@@ -21,5 +21,9 @@ export class BlogsService {
 
   getBlogById(id: InputSignal<string | undefined>): HttpResourceRef<Blog | undefined> {
     return httpResource<Blog>(() => `${this.apiBaseUrl}/api/blogs/${id()}`);
+  }
+
+  editBlogById(id: string, body: UpdateBlogRequest): Observable<Blog> {
+    return this.http.put<Blog>(`${this.apiBaseUrl}/api/blogs/${id}`, body);
   }
 }
