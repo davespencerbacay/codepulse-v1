@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, InputSignal } from '@angular/core';
 import { AddBlogRequest, Blog } from '../models/Blogs.model';
 import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
@@ -17,5 +17,9 @@ export class BlogsService {
 
   getAllBlogs(): HttpResourceRef<Blog[] | undefined> {
     return httpResource<Blog[]>(() => `${this.apiBaseUrl}/api/blogs`);
+  }
+
+  getBlogById(id: InputSignal<string | undefined>): HttpResourceRef<Blog | undefined> {
+    return httpResource<Blog>(() => `${this.apiBaseUrl}/api/blogs/${id()}`);
   }
 }
