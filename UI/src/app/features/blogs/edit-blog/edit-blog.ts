@@ -104,4 +104,18 @@ export class EditBlog {
       });
     }
   }
+
+  onDelete() {
+    const id = this.id();
+    if (id) {
+      this.blogService.deleteBlogById(id).subscribe({
+        next: () => {
+          this.router.navigate(['/admin/blogs']);
+        },
+        error: (err) => {
+          console.error('Error deleting blog:', err);
+        },
+      });
+    }
+  }
 }

@@ -21,7 +21,20 @@ namespace CodePulse.API.Repositories.Implementation
             return await dbContext.BlogPosts
                 .Include(x => x.Categories)
                 .FirstOrDefaultAsync(x => x.Id == blog.Id);
-        } 
+        }
+
+        public async Task<BlogPost?> DeleteAsync(Guid blogId)
+        {
+            var existingBlog = await dbContext.BlogPosts.FirstOrDefaultAsync(x => x.Id == blogId);
+            if(existingBlog != null)
+            {
+                dbContext.BlogPosts.Remove(existingBlog);
+                await dbContext.SaveChangesAsync();
+                return existingBlog;
+            }
+
+            return null;
+        }
 
         public async Task<IEnumerable<BlogPost>> GetAllAsync()
         {
