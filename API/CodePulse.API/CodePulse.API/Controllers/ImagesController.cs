@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CodePulse.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/images")]
     [ApiController]
     public class ImagesController : ControllerBase
     {
@@ -50,6 +50,29 @@ namespace CodePulse.API.Controllers
             }
 
             return BadRequest(ModelState);
+        }
+
+        // GET: /api/images
+        [HttpGet]
+        public async Task<IActionResult> GetAllImages()
+        {
+            var images = await imageRepository.GetAll();
+            var response = new List<BlogImageDto>();
+
+            foreach(var image in images)
+            {
+                response.Add(new BlogImageDto
+                {
+                    Id = image.Id,
+                    FileName = image.FileName,
+                    FileExtension = image.FileExtension,
+                    Title = image.Title,
+                    Url = image.Url,
+                    DataCreated = image.DataCreated
+                });
+            }
+
+            return Ok(response);
         }
 
         private void ValidateFileUpload(IFormFile file)
