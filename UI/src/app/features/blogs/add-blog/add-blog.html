@@ -37,15 +37,24 @@
     </div>
     <div class="mb-3">
       <label for="featuredImageUrl">Featured Image URL</label>
-      @if(addBlogPostForm.controls.featuredImageUrl.getRawValue()) {
-      <div class="mb-2">
-        <img
-          [src]="addBlogPostForm.controls.featuredImageUrl.getRawValue()"
-          alt="Featured Image"
-          class="img-fluid my-3"
-          style="width: 200px"
-        />
+      <div class="mt-3">
+        <button
+          class="btn btn-info"
+          type="button"
+          (click)="imageSelectorService.displayImageSelector()"
+        >
+          Select Images
+        </button>
       </div>
+      @if (addBlogPostForm.controls.featuredImageUrl.getRawValue()) {
+        <div class="mb-2">
+          <img
+            [src]="addBlogPostForm.controls.featuredImageUrl.getRawValue()"
+            alt="Featured Image"
+            class="img-fluid my-3"
+            style="width: 200px"
+          />
+        </div>
       }
       <input
         type="text"
@@ -78,8 +87,8 @@
     <div class="mb-3">
       <label for="categories" class="form-label"> Categories </label>
       <select class="form-control" multiple formControlName="categories">
-        @for(category of categoriesResponse(); track category.id) {
-        <option [value]="category.id">{{ category.name }}</option>
+        @for (category of categoriesResponse(); track category.id) {
+          <option [value]="category.id">{{ category.name }}</option>
         }
       </select>
     </div>

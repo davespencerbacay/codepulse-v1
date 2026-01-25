@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BlogsService } from '../services/blogs-service';
 import { AddBlogRequest } from '../models/Blogs.model';
 import { Router } from '@angular/router';
 import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
+import { ImageSelectorService } from '../../../shared/services/image-selector-service';
 
 @Component({
   selector: 'app-add-blog',
@@ -18,6 +19,8 @@ export class AddBlog {
   router = inject(Router);
   private categoriesResourceRef = this.categoryService.getAllCategories();
   categoriesResponse = this.categoriesResourceRef.value;
+
+  imageSelectorService = inject(ImageSelectorService);
 
   addBlogPostForm = new FormGroup({
     title: new FormControl<string>('', {
@@ -57,6 +60,15 @@ export class AddBlog {
     categories: new FormControl<string[]>([], {
       nonNullable: true,
     }),
+  });
+
+  selectedImageEffectRef = effect(() => {
+    const selectedImageUrl = this.imageSelectorService.selectedImage();
+    if (selectedImageUrl) {
+      this.addBlogPostForm.patchValue({
+        featuredImageUrl: selectedImageUrl,
+      });
+    }
   });
 
   onSubmit() {

@@ -43,15 +43,15 @@
           Select Images
         </button>
       </div>
-      @if(editBlogPostForm.controls.featuredImageUrl.getRawValue()) {
-      <div class="mb-2">
-        <img
-          [src]="editBlogPostForm.controls.featuredImageUrl.getRawValue()"
-          alt="Featured Image"
-          class="img-fluid my-3"
-          style="width: 200px"
-        />
-      </div>
+      @if (editBlogPostForm.controls.featuredImageUrl.getRawValue()) {
+        <div class="mb-2">
+          <img
+            [src]="editBlogPostForm.controls.featuredImageUrl.getRawValue()"
+            alt="Featured Image"
+            class="img-fluid my-3"
+            style="width: 200px"
+          />
+        </div>
       }
       <input
         type="text"
@@ -84,8 +84,8 @@
     <div class="mb-3">
       <label for="categories" class="form-label"> Categories </label>
       <select class="form-control" multiple formControlName="categories">
-        @for(category of categoriesResponse(); track category.id) {
-        <option [value]="category.id">{{ category.name }}</option>
+        @for (category of categoriesResponse(); track category.id) {
+          <option [value]="category.id">{{ category.name }}</option>
         }
       </select>
     </div>
@@ -96,5 +96,3 @@
     </div>
   </form>
 </div>
-
-<app-image-selector></app-image-selector>
