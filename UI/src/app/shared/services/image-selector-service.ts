@@ -10,6 +10,7 @@ import { HttpClient, httpResource, HttpResourceRef } from '@angular/common/http'
 export class ImageSelectorService {
   showImageSelector = signal<boolean>(false);
   http = inject(HttpClient);
+  selectedImage = signal<string | null>(null);
 
   displayImageSelector() {
     this.showImageSelector.set(true);
@@ -33,5 +34,10 @@ export class ImageSelectorService {
       id();
       return `${environment.apiBaseUrl}/api/images`;
     });
+  }
+
+  selectImage(imageUrl: string) {
+    this.selectedImage.set(imageUrl);
+    this.hideImageSelector();
   }
 }

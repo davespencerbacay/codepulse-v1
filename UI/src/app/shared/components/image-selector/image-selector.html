@@ -19,7 +19,11 @@
             } @else {
               <div class="d-flex flex-wrap overflow-auto" style="max-height: calc(100vh - 300px)">
                 @for (image of images(); track image.id) {
-                  <div class="d-flex flex-column align-items-center p-4">
+                  <div
+                    class="d-flex flex-column align-items-center p-4"
+                    role="button"
+                    (click)="onSelectImage(image)"
+                  >
                     <img
                       [src]="image.url"
                       [alt]="image.title"

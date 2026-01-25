@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ImageSelectorService } from '../../services/image-selector-service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { BlogImage } from '../../models/image.model';
 
 @Component({
   selector: 'app-image-selector',
@@ -60,5 +61,9 @@ export class ImageSelector {
       const file = input.files[0];
       this.imageSelectorUploadForm.patchValue({ file: file });
     }
+  }
+
+  onSelectImage(image: BlogImage) {
+    this.imageSelectorService.selectImage(image.url);
   }
 }
