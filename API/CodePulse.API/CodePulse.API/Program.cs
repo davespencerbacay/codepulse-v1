@@ -31,8 +31,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-app.UseHttpsRedirection();
+// In development we keep HTTP to avoid self-signed certificate issues with the Angular dev server
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseCors(options =>
 {
     options.AllowAnyHeader();

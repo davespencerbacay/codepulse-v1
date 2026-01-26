@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="my-5">
+    @if (isLoading()) {
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    } @else {
+      <div class="row">
+        @for (blog of blogsResponse(); track blog.id) {
+          <div class="col col-md-4">
+            <div class="card mx-1 m-1">
+              <img [src]="blog.featuredImageUrl" class="card-img" />
+              <div class="card-body">
+                <h5 class="card-title">{{ blog.title }}</h5>
+                <p class="card-text">{{ blog.shortDescription }}</p>
+                <a [routerLink]="['/blog', blog.id]" class="card-link">Read more</a>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>
